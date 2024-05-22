@@ -7,6 +7,7 @@ import jakarta.validation.constraints.*;
 import lombok.*;
 
 import java.time.LocalDateTime;
+import java.util.Objects;
 
 @Data
 @AllArgsConstructor
@@ -16,8 +17,10 @@ import java.time.LocalDateTime;
 public class UserRegisterRequest {
 
 
-    @NotBlank
+//    @NotBlank
     private String name;
+
+    private String nickName;
 
     @NotBlank
     @Size(min = 1,max = 12)
@@ -37,4 +40,16 @@ public class UserRegisterRequest {
 //    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     @FutureOrPresent
     private LocalDateTime registerAt;
+
+    @AssertTrue(message = "이름 또는 닉네임 중 하나라도 입력되어야 합니다.")
+    public boolean isNameCheck(){
+        if (Objects.nonNull(name) && !name.isBlank()){
+            return true;
+        }
+
+        if (Objects.nonNull(nickName) &&!nickName.isBlank()){
+            return true;
+        }
+        return false;
+    }
 }
